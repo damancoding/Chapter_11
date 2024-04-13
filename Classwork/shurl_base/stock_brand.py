@@ -22,10 +22,10 @@ if date1 == str:
     print("Invalid entry.")
     date_text = int(input("Enter date, YYYY-MM-DD: "))
 
-trans_text = input("Enter whether you are BUYing or SELLing this stock: ")
+trans_text = input("Enter whether you are BUYing or SELLing this stock: ").upper()
 if trans_text != "BUY" or "SELL":                                                            # User has to input action as uppercase to stand out in database
     print("Invalid entry. Either BUY or SELL.")
-    trans_text = input("Enter whether you are buying or selling this stock: ")
+    trans_text = input("Enter whether you are BUYing or SELLing this stock: ")
 
 
 stockName = input("Enter the stock name abbreviations: ")                                    # The maximum is at 9 because of stocks like NYSE:NEE and others in New York
