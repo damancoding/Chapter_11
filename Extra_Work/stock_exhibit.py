@@ -113,7 +113,7 @@ def viewing():
 			    price_r = range(num_1,num_2)
 			    data.execute(f'SELECT {price_r} FROM stocks')
 			    print(data.fetchall())
-	elif view == "d" or "D":
+	elif view == "c" or "C":
 		 view_q = input ("Time frame: ")
 			 time_1 = float(input("Enter first time frame: "))
 			 time_2 = float(input("Enter the second time frame: "))
