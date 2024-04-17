@@ -101,7 +101,7 @@ def viewing():
         print(data.fetchall())
         conn.commit()
         conn.close()
-    elif view == "c" or "C":
+    elif view == "b" or "B":
 	    view_p = input ("Price range: ")
 		    num_1 = float(input("Enter the first price:"))
 			num_2 = float(input("Enter the first price:"))
