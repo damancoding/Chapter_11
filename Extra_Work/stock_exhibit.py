@@ -63,10 +63,29 @@ def buy_stock():
     main()
 
 def viewing():
-    data.execute('SELECT * FROM stocks')
-    for row in data.fetchall():
-        print(row)
-    main()
+    men_u = [
+        "a. Date",
+        "b. Trades",
+        "c. Stock name",
+        "d. Homepage"
+    ]
+    print(men_u)
+    u = input("Choose options (a, b, c, d): ")
+    
+    def catchselect(selection:str):
+        match selection:
+            case "a":
+                etad = input("Enter date: ")                                                            #  
+                data.execute(f'SELECT {etad} FROM stocks WHERE date_text = {etad}')
+            case "b":
+                sedarT = input("Enter whether you bought or sold (buy or sell): ")
+                data.execute(f'SELECT {sedarT} FROM stocks WHERE trans_text = {sedarT}')
+            case "c":
+                
+
+   # for row in data.fetchall():
+   #     print(row)
+   # main()
 
 def updating():                                                                                 # I need to work on everything in this section.
     menq = [
