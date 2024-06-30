@@ -13,7 +13,7 @@ conn = sqlite3.connect('shurl_base.db')
 data = conn.cursor()
 
 data.execute('''CREATE TABLE IF NOT EXISTS stocks
-             (date text, trans text, symbol text, qty real, price real)''')
+             (date text, sale text, symbol text, qty real, price real, yield real)''')
 
 conn.commit()
 
@@ -25,8 +25,8 @@ def buy_stock():
         print("Invalid entry.2")
         date_text
 
-    trans_text = str.upper(input("Enter whether you are buying or selling this stock: "))
-    if trans_text == "BUY" or "SELL":
+    sale_text = str.upper(input("Enter whether you are buying or selling this stock: "))
+    if sale_text == "BUY" or "SELL":
         print("Valid Entry.")
         pass
 
@@ -37,7 +37,7 @@ def buy_stock():
     elif stockName != str:
         print("Invalid entry.2")
         stockName = input("Enter the stock name abbreviations: ")
-    elif stockName[5] == ":":                                                                    # This pass is specifically for the semicolons in NYSE based companies           
+    elif stockName[5] == ":":                                                                     # This pass is specifically for the semicolons in NYSE based companies           
         pass
 
     qty_real = int(input("Enter how many stocks to be bought: "))
@@ -54,38 +54,48 @@ def buy_stock():
         print("the stock price shouldn't exceed $500,000.")
         price_real = int(input("Enter how much each stock cost: "))
 
-    print(f"The stock you entered was {stockName}, you are {trans_text}ing {qty_real} stocks. Each stock costs {price_real}.")
+    print(f"The stock you entered was {stockName}, you are {sale_text}ing {qty_real} stocks. Each stock costs {price_real}.")
     print("*********************************************************************************")
-    data.execute(f"INSERT INTO stocks VALUES ('{date_text}','{trans_text}','{stockName}',{qty_real},{price_real})")
+    data.execute(f"INSERT INTO stocks VALUES ('{date_text}','{sale_text}','{stockName}',{qty_real},{price_real}, yield.)")
     conn.commit()
     for row in data.fetchall():
         print(row)
     main()
 
-def viewing():
+
+def viewing():                                                                                    # Update: fix the viewing system by displaying everything
     men_u = [
-        "a. Date",
-        "b. Trades",
-        "c. Stock name",
-        "d. Homepage"
+        "a. Trades",
+        "b. Stock name",
+        "c. Homepage",
     ]
     print(men_u)
-    u = input("Choose options (a, b, c, d): ")
-    
-    def catchselect(selection:str):
-        match selection:
-            case "a":
-                etad = input("Enter date: ")                                                            #  
-                data.execute(f'SELECT {etad} FROM stocks WHERE date_text = {etad}')
-            case "b":
-                sedarT = input("Enter whether you bought or sold (buy or sell): ")
-                data.execute(f'SELECT {sedarT} FROM stocks WHERE trans_text = {sedarT}')
-            case "c":
-                
+    u = input("Choose options (a, b, c): ")
+    print(u)
+    match u:
+        case "a":
+            sedarT = input("Enter whether you bought or sold (buy or sell): ")                    # New problem: "no such column". Doesn't matter if you entered buy or sell.  
+            trade = (f'SELECT {sedarT} FROM stocks WHERE sale_text = {sedarT}')                   # Add-on: Changed name of column to sale, splitting sale column into 2 columns: buy or sell
+            data.execute(trade)
+            print(f"Trades: {sedarT}")
+            output = data.fetchall()
+            for row in output:
+                print(row)
+
+        case "b":
+            eman = input("Enter name of stock: ")
+            name = (f'SELECT {eman} FROM stocks WHERE stockName = {eman}')
+            data.execute(name)
+            output = data.fetchall()
+            for row in output:
+                print(row)
+
+        case "c":
+            main()                
 
    # for row in data.fetchall():
    #     print(row)
-   # main()
+    main()
 
 def updating():                                                                                 # I need to work on everything in this section.
     menq = [
@@ -149,7 +159,7 @@ def updating():                                                                 
                             print("Please choose an option from Menu.")
             case "b":
                 trades_q = input("Did you buy or sell item: ")
-                sql = 'SELECT trades_q FROM trans_text'
+                sql = 'SELECT trades_q FROM sale_text'
                 data.execute(sql)
                 myresult = data.fetchall()
                 for x in myresult:
@@ -205,3 +215,4 @@ def main():
 
 main()
 conn.close()
+# next add-on: Probable yields. This is based off of NASDAQ system and will be multiplying current cost/ P/E Ratio to yield.
